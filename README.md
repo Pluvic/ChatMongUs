@@ -48,7 +48,7 @@ A step by step series of examples that tell you how to get a development env run
 Firstaval, you need to clone the repository
 
 ```
-git clone https://github.com/UNamurCSFaculty/2425_INFOB318_ChatMongUs_01
+git clone https://github.com/Pluvic/ChatMongUs
 ```
 
 Open the repository project and open a terminal in that directory. Then you just have to build the docker compose file.

@@ -1,0 +1,31 @@
+{
+  "name": "chatmongus",
+  "version": "0.0.1",
+  "description": "A game where you have to find the human among the bots",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UNamurCSFaculty/2425_INFOB318_ChatMongUs_01.git"
+  },
+  "author": "Pluvic <victor.pluvinage@student.unamur.be>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UNamurCSFaculty/2425_INFOB318_ChatMongUs_01/issues"
+  },
+  "homepage": "https://github.com/UNamurCSFaculty/2425_INFOB318_ChatMongUs_01#readme",
+  "dependencies": {
+    "@uswriting/bcrypt": "^1.0.3",
+    "axios": "^1.7.7",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "jest": "^29.7.0",
+    "ollama": "^0.5.9",
+    "pg": "^8.14.1",
+    "socket.io": "^4.8.1",
+    "uuid": "^11.0.3"
+  }
+}

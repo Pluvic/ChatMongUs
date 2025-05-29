@@ -36,10 +36,6 @@
         width:100vw;
         padding: 0;
         position: absolute; top:0; left:0;
-        /* background-image: url("../assets/bgFireplace.jpg");
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover; */
     }
 
     #title {
@@ -66,6 +62,7 @@
 
     #secondaryButton {
         border-radius: 30px;
+        max-width : 30em;
     }
 
     #buttonJoinGame {
@@ -76,6 +73,7 @@
         border-radius: 50px 50px 0px 0px;
         background-color:rgb(22, 93, 225);
         border : solid 1px white;
+        max-width : 30em;
     }
 
     #buttonCreateGame {
@@ -86,6 +84,7 @@
         border-radius: 0px 0px 50px 50px;
         background-color: rgb(6, 190, 6);
         border : solid 1px white;
+        max-width : 30em;
     }
 
     footer {

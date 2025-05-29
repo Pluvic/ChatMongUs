@@ -119,6 +119,17 @@ const addMessage = (roomName, message, userName) => {
     return rooms[index].conversation;
 }
 
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
+
 // function to start a game in a room
 const startGame = (roomName) => {
     const index = rooms.findIndex(room => room.roomName === roomName);
@@ -132,6 +143,9 @@ const startGame = (roomName) => {
 
         // Get the players of the room
         let players = rooms[index].players;
+
+        // Shuffle the order of the players
+        players = shuffleArray(players);
 
         let randomNumber = Math.floor(Math.random() * nickNames.length);
 

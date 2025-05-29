@@ -89,8 +89,11 @@ module.exports = (server) => {
                 // Log
                 console.log('Bot message sent to room: ' + data.roomName);
 
-                // Send the message to the room
-                io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
+                // Wait a random time before sending the message
+                setTimeout(() => {
+                    // Send the message to the room
+                    io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
+                }, Math.floor(Math.random() * 5000) + 1000);
             });
         });
 

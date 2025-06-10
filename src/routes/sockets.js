@@ -76,26 +76,24 @@ module.exports = (server) => {
 
             // Add the message to the conversation
             addMessageGame(data.roomName, data.text, data.sender);
+
+            gameInfo = getGameInfo(data.roomName);
             
             // Send the message to the room
-            io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
+            io.to(data.roomName).emit('gameInfo', gameInfo);
+
+            //handle bot turns if there are bots in the game
+            if (gameInfo.isBotTurn) {
+                console.log('Handling bot turns for room:', data.roomName);
+                handleBotTurns(data.roomName).then(() => {
+                    console.log('Bot turns handled for room:', data.roomName);
+                }).catch(err => {
+                    console.error('Error handling bot turns:', err);
+                });
+            }
+            
         });
 
-        // socket for sending bot message
-        socket.on('botMessage', (data) => {
-
-            // Generate the bot message
-            botMessage(data.roomName).then(() => {
-                // Log
-                console.log('Bot message sent to room: ' + data.roomName);
-
-                // Wait a random time before sending the message
-                setTimeout(() => {
-                    // Send the message to the room
-                    io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
-                }, Math.floor(Math.random() * 5000) + 1000);
-            });
-        });
 
 
         // Socket for adding a bot to the room
@@ -132,6 +130,15 @@ module.exports = (server) => {
 
             // Send the information to the room
             io.to(data.roomName).emit('gameInfo', newGame);
+
+            // Handle bot turns if there are bots in the game
+            if (newGame.isBotTurn) {
+                handleBotTurns(data.roomName).then(() => {
+                    console.log('Bot turns handled for room:', data.roomName);
+                }).catch(err => {
+                    console.error('Error handling bot turns:', err);
+                });
+            }
         });
 
         // Socket for getting the game info
@@ -205,5 +212,21 @@ module.exports = (server) => {
             }, 5000);
         });
     });
+
+    async function handleBotTurns(roomName) {
+    let gameInfo = getGameInfo(roomName);
+
+    while (gameInfo.isBotTurn) {
+        await botMessage(roomName);
+        console.log('Bot message sent to room:', roomName);
+
+        await new Promise(resolve =>
+            setTimeout(resolve, Math.floor(Math.random() * 10000) + 5000)
+        );
+
+        io.to(roomName).emit('gameInfo', getGameInfo(roomName));
+        gameInfo = getGameInfo(roomName); // update for next loop check
+    }
+}
 }
 

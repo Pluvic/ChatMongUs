@@ -92,6 +92,12 @@
         socket.emit("endGame", {roomName: $currentRoom});
     }
 
+    $: radius = 90 + Math.max(0, ($players.length - 3) * 10); // Adjust base and scaling as needed
+
+    function angle(i) {
+        return (i * (360 / $players.length) + 270) % 360;
+    }
+
 </script>
 
 <main>
@@ -125,19 +131,21 @@
     {:else}
     <div class="circle-container">
         {#each $players as player, i}
-        <div 
-            class="player" 
-            style="transform: rotate({(i * (360 / $players.length) + 270) % 360 }deg) translate(90px) rotate(-{(i * (360 / $players.length) + 270) % 360}deg);"
-        >
-            <img src={robotsImage[i % robotsImage.length]} alt={player.nickname} />
-            <div class="player-name" id = "{player.nickname == $nickname ? 'playerActive' : 'otherPlayer'}">{player.nickname}</div>
-            
-            {#if $phase == "vote" && !$hasAlreadyVoted}
+            <div 
+                class="player" 
+                style="transform: rotate({angle(i)}deg) translate({radius}px) rotate(-{angle(i)}deg);"
+            >
+                <img src={robotsImage[i % robotsImage.length]} alt={player.nickname} />
+                <div class="player-name" id="{player.nickname == $nickname ? 'playerActive' : 'otherPlayer'}">
+                {player.nickname}
+                </div>
+
+                {#if $phase == "vote" && !$hasAlreadyVoted}
                 <button on:click={() => vote(player.nickname)}>Vote</button>
-            {:else}
+                {:else}
                 <button disabled>Vote</button>
-            {/if}
-        </div>
+                {/if}
+            </div>
         {/each}
     </div> 
         {#if $phase == "vote" && !$hasAlreadyVoted}

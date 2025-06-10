@@ -301,6 +301,11 @@ const handleVote = (roomName) => {
                 
                 // If the player is a human, kill him however if he is a bot, kill the voter
                 if (!player.userID.includes("bot")) {
+                    // Verify if the player is already dead
+                    if (games[index].deadPlayers.includes(player.nickname)) {
+                        continue; // Skip if the player is already dead
+                    }
+
                     games[index].deadPlayers.push(player.nickname);
                     games[index].humansLeft--;
                 }
@@ -310,6 +315,11 @@ const handleVote = (roomName) => {
                     // Find the player that voted
                     let voter = games[index].playersGame.find(player => player.nickname === games[index].votes[i].voter);
                     
+                    // Verify if the voter is already dead
+                    if (games[index].deadPlayers.includes(voter.nickname)) {
+                        continue; // Skip if the voter is already dead
+                    }
+
                     // Remove the voter from the players
                     let voterIndex = games[index].playersGame.findIndex(player => player.nickname === voter.nickname);
                     games[index].playersGame.splice(voterIndex, 1);

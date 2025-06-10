@@ -2,6 +2,7 @@
 
 // Import the writable function from Svelte's store module
 import { writable } from 'svelte/store';
+import config from '../lib/config';
 
 // Create a writable store to hold the current page
 export const currentPage = writable("home");
@@ -12,7 +13,7 @@ export const userName = writable(null);
 
 // Create a function to see whether the user is connected or not
 export async function checkAuthentification() {
-    const response = await fetch('http://localhost:3000/auth', {
+    const response = await fetch(config.FRONT_END_URL + ':3000/auth', {
         method: 'GET',
         credentials: 'include'
     });
@@ -45,7 +46,7 @@ export async function checkAuthentification() {
 
 // Create a function to get the games from the server
 export async function getGames() {
-    const response = await fetch('http://localhost:3000/rooms', {
+    const response = await fetch(config.FRONT_END_URL + ':3000/rooms', {
         method: 'GET'}
     );
     let games = await response.json();
@@ -55,7 +56,7 @@ export async function getGames() {
 
 // Create a function to get the game history from the server
 export async function getHistory() {
-    const response = await fetch('http://localhost:3000/history', {
+    const response = await fetch(config.FRONT_END_URL + ':3000/history', {
         method: 'GET'}
     );
     let history = await response.json();

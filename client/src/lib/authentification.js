@@ -1,12 +1,13 @@
 // All the functions to register and login a user
 
 import { currentPage, isConnected, userName } from "../stores/store";
+import config from "./config";
 
 // Function to register a new user
 export async function register(username, password) {
 
     // Request to the server to register a new user
-    const response = await fetch('http://localhost:3000/register', {
+    const response = await fetch(config.FRONT_END_URL + ':3000/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -33,7 +34,7 @@ export async function register(username, password) {
 export async function login(username, password) {
 
     // Request to the server to login a user
-    const response = await fetch('http://localhost:3000/login', {
+    const response = await fetch(config.FRONT_END_URL + ':3000/login', {
         method: 'POST',
         credentials: 'include',
         headers: {

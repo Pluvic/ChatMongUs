@@ -3,6 +3,7 @@
     import Profile from "../components/Profile.svelte";
     import { back, game } from "../lib/navigation.js";
     import { currentRoom } from "../stores/room";
+    import config from "../lib/config.js";
 
     // Define the local variables for the game creation form
     let roomName = "";
@@ -12,7 +13,7 @@
     // Function to handle the form submission and create a new game room
     async function createGame() {
 
-        const response = await fetch("http://localhost:3000/create-room", {
+        const response = await fetch(config.FRONT_END_URL + ":3000/create-room", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

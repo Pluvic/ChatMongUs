@@ -7,13 +7,22 @@
     import { nickname, currentTheme, players, turn, isBotTurn, phase, messages, hasAlreadyVoted, deadPlayers, winner } from '../../stores/game';
     import Lobby from './Lobby.svelte';
     import Game from './Game.svelte';
+    import config from '../../lib/config';
+
+    // Function to generate a random room ID
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
 
     // Define the local variables from localStorage
-    let userID = localStorage.getItem('userId') || crypto.randomUUID();
+    let userID = localStorage.getItem('userId') || generateUUID();
     let roomID = $currentRoom || localStorage.getItem('roomID');
 
     // Define the socket variable
-    let socket = ioClient("http://localhost:3000");
+    let socket = ioClient(config.FRONT_END_URL + ":3000");
   
     onMount(() => {
 

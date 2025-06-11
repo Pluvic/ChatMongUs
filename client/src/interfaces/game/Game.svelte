@@ -176,11 +176,20 @@
             </div>
         
             <form on:submit|preventDefault={sendMessage}>
-                <input class = "input-box" type="text" bind:value={message} placeholder="Type your message" required>
-                {#if $turn == $nickname}
-                    <button type="submit">Send</button>
+                {#if $language == "fr"}
+                    <input class = "input-box" type="text" bind:value={message} placeholder= "Taper votre message" required>
+                    {#if $turn == $nickname}
+                        <button type="submit">Envoyer</button>
+                    {:else}
+                        <button type="submit" disabled>Envoyer</button>
+                    {/if}
                 {:else}
-                    <button type="submit" disabled>Send</button>
+                    <input class = "input-box" type="text" bind:value={message} placeholder="Type your message" required>
+                    {#if $turn == $nickname}
+                        <button type="submit">Send</button>
+                    {:else}
+                        <button type="submit" disabled>Send</button>
+                    {/if}
                 {/if}
             </form>
         </div>

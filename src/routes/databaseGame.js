@@ -9,6 +9,7 @@ router.get('/history', async (req, res) => {
     const result = await pool.query(selectQuery)
 
     const history = result.rows.map(row => ({
+        id: row.id,
         roomName: row.room_name,
         conversation: JSON.parse(row.conversation),
     }));

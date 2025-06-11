@@ -5,12 +5,12 @@
 
     // Function to handle the back button click
     /**
-     * @param {string} roomName
+     * @param {string} id
      */
-    function seeMessages(roomName) {
+    function seeMessages(id) {
         seeGames = false;
-        messages = history.find(game => game.roomName == roomName).conversation;
-        oldRoomName = roomName;
+        messages = history.find(game => game.id == id).conversation;
+        oldRoomName = id;
     }
 
     // Define the local variables
@@ -40,7 +40,7 @@
                         <div class="game">
                             <p>Room Name: {game.roomName}</p>
                             <p>Number of Messages: {game.conversation.length}</p>
-                            <button on:click={() => seeMessages(game.roomName)}>See</button>
+                            <button on:click={() => seeMessages(game.id)}>See</button>
                         </div>
                     
                     {/each}
@@ -83,6 +83,7 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        justify-content: center;
     }
 
     .messages {

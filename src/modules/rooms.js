@@ -20,7 +20,7 @@ let subjectFR = ["JeuxDeSociété", "JeuxVidéo", "JeuxDeCartes", "Sports", "Fil
 let nickNames = ["Victor", "Ugho", "Louca", "Antoine", "Noah", "Thomas", "Mathieu", "Mathis", "Célestin"];
 // List of random messages use when a timeout occurs for a player
 let message = ["Hello", "Hi", "How are you?", "What's up?", "Good morning", "Good evening", "Good night", "Good afternoon", "Good day", "Good bye", "See you", "Bye", "Good luck", "Take care", "Cheers", "Congratulations", "Thank you", "Sorry", "Please", "Excuse me", "I love you", "I miss you", "I need you", "I want you", "I like you", "I hate you", "I'm hungry", "I'm thirsty", "I'm tired", "I'm bored", "I'm sick", "I'm cold", "I'm hot", "I'm happy", "I'm sad", "I'm angry", "I'm scared", "I'm confused", "I'm lost", "I'm lonely", "I'm busy", "I'm free", "I'm ready", "I'm here", "I'm there", "I'm everywhere", "I'm nowhere", "I'm right", "I'm wrong", "I'm good", "I'm bad", "I'm beautiful", "I'm ugly", "I'm rich", "I'm poor", "I'm smart", "I'm stupid", "I'm funny", "I'm serious", "I'm crazy", "I'm normal", "I'm unique", "I'm special", "I'm different", "I'm the same", "I'm the best", "I'm the worst", "I'm the first", "I'm the last", "I'm the only one", "I'm the chosen one", "I'm the hero", "I'm the villain", "I'm the king", "I'm the queen", "I'm the prince", "I'm the princess", "I'm the president", "I'm the leader", "I'm the boss", "I'm the master"];
-let messageFR = ["Bonjour", "Salut", "Comment ça va ?", "Quoi de neuf ?", "Bonjour", "Bonsoir", "Bonne nuit", "Bon après-midi", "Bonne journée", "Au revoir", "À bientôt", "Bye", "Bonne chance", "Prends soin de toi", "Santé", "Félicitations", "Merci", "Désolé", "S'il te plaît", "Excuse-moi", "Je t'aime", "Tu me manques", "J'ai besoin de toi", "Je te veux", "Je t'aime bien", "Je te déteste", "J'ai faim", "J'ai soif", "Je suis fatigué", "Je m'ennuie", "Je suis malade", "J'ai froid", "J'ai chaud", "Je suis heureux", "Je suis triste", "Je suis en colère", "J'ai peur", "Je suis confus", "Je suis perdu", "Je me sens seul", "Je suis occupé", "Je suis libre", "Je suis prêt", "Je suis ici", "Je suis là-bas", "Je suis partout", "Je ne suis nulle part", "J'ai raison", "J'ai tort", "Je vais bien", "Ça va mal", "Tu es beau/belle", "Tu es moche", "Tu es riche/pauvre"];
+let messageFR = ["Bonjour", "Salut", "Comment ça va ?", "Quoi de neuf ?", "Bonjour", "Bonsoir", "Bonne nuit", "Bon après-midi", "Bonne journée", "Au revoir", "À bientôt", "Bye", "Bonne chance", "Prends soin de toi", "Santé", "Félicitations", "Merci", "Désolé", "S'il te plaît", "Excuse-moi", "Je t'aime", "Tu me manques", "J'ai besoin de toi", "Je te veux", "Je t'aime bien", "Je te déteste", "J'ai faim", "J'ai soif", "Je suis fatigué", "Je m'ennuie", "Je suis malade", "J'ai froid", "J'ai chaud", "Je suis heureux", "Je suis triste", "Je suis en colère", "J'ai peur", "Je suis confus", "Je suis perdu", "Je me sens seul", "Je suis occupé", "Je suis libre", "Je suis prêt", "Je suis ici", "Je suis là-bas", "Je suis partout", "Je ne suis nulle part", "J'ai raison", "J'ai tort", "Je vais bien", "Ça va mal", "Tu es beau/belle", "Tu es moche", "Tu es riche"];
 
 
 // The following functions will be used to manage the rooms
@@ -262,7 +262,8 @@ const handleTimeout = (roomName) => {
         // If the phase is messaging, add a message to the game
         if (games[index].phase === "messaging") {
             // Select a random message from the list of messages
-            games[index].messages.push({text : message[Math.floor(Math.random() * message.length)], sender : games[index].turn});
+            let messageToSend = games[index].language === 'fr' ? messageFR : message;
+            games[index].messages.push({text : messageToSend[Math.floor(Math.random() * messageToSend.length)], sender : games[index].turn});
             updateGame(roomName);
         }
 
@@ -377,7 +378,13 @@ const nextRound = (roomName) => {
             games[index].votes = [];
             games[index].phase = "messaging";
             games[index].deadPlayers = [];
-            games[index].currentTheme = subject[Math.floor(Math.random() * subject.length)];
+
+            if (games[index].language === 'fr') {
+                games[index].currentTheme = subjectFR[Math.floor(Math.random() * subjectFR.length)];
+            }
+            else {
+                games[index].currentTheme = subject[Math.floor(Math.random() * subject.length)];
+            }
             games[index].turn = games[index].playersGame[Math.floor(Math.random() * games[index].playersGame.length)].nickname;
             games[index].isBotTurn = false;
             let nextIndex = games[index].playersGame.findIndex(player => player.nickname === games[index].turn);

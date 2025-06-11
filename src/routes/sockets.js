@@ -244,6 +244,17 @@ module.exports = (server) => {
 
             // Send the information to the room
             io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
+
+            gameInfo = getGameInfo(data.roomName);
+
+            // Handle bot turns if there are bots in the game
+            if (gameInfo.isBotTurn) {
+                handleBotTurns(data.roomName).then(() => {
+                    console.log('Bot turns handled for room:', data.roomName);
+                }).catch(err => {
+                    console.error('Error handling bot turns:', err);
+                });
+            }
         });
 
         // Socket for handling the end of the game

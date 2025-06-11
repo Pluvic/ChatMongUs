@@ -69,7 +69,7 @@
     // Listen for the game state updates from the server
     $ : if ($turn && $phase == "messaging") {
         clearInterval(timer);
-        startTimer(30);
+        startTimer(40);
 
         if ($isBotTurn) {
             socket.emit("botMessage", {roomName: $currentRoom});
@@ -79,7 +79,7 @@
     // Listen for the phase to change in voting phase
     $ : if ($phase == "vote") {
         clearInterval(timer);
-        startTimer(15);
+        startTimer(20);
     }
 
     // Listen for the phase to change in results phase

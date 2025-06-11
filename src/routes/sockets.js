@@ -84,18 +84,28 @@ module.exports = (server) => {
 
             //handle bot turns if there are bots in the game
             if (gameInfo.isBotTurn) {
-                console.log('Handling bot turns for room:', data.roomName);
-                handleBotTurns(data.roomName).then(() => {
+                (async () => {
+                    await handleBotTurns(data.roomName);
                     console.log('Bot turns handled for room:', data.roomName);
-                }).catch(err => {
+                    let gameInfo2 = getGameInfo(data.roomName);
+            
+                    console.log('Game phase:', gameInfo2.phase);
+                    if (gameInfo2.phase == "vote") {
+                        console.log('Setting timeout for vote phase in room:', data.roomName);
+                        setTimeout(() => {
+                            handleTimeout(data.roomName);
+                            io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
+                    }, 21000);
+            }
+                })().catch(err => {
                     console.error('Error handling bot turns:', err);
                 });
             }
 
-            gameInfo = getGameInfo(data.roomName);
+            let gameInfo2 = getGameInfo(data.roomName);
 
-            console.log('Game phase:', gameInfo.phase);
-            if (gameInfo.phase == "vote") {
+            console.log('Game phase:', gameInfo2.phase);
+            if (gameInfo2.phase == "vote") {
                 console.log('Setting timeout for vote phase in room:', data.roomName);
                 setTimeout(() => {
                     handleTimeout(data.roomName);
@@ -194,10 +204,23 @@ module.exports = (server) => {
             gameInfo = getGameInfo(data.roomName);
 
             if (gameInfo.isBotTurn) {
-                handleBotTurns(data.roomName).then(() => {
-                    console.log('Bot turns handled after timeout for room:', data.roomName);
-                }).catch(err => {
-                    console.error('Error handling bot turns after timeout:', err);
+                (async () => {
+                    await handleBotTurns(data.roomName);
+                    console.log('Bot turns handled for room:', data.roomName);
+
+                    let gameInfo2 = getGameInfo(data.roomName);
+            
+                    console.log('Game phase:', gameInfo2.phase);
+                    if (gameInfo2.phase == "vote") {
+                        console.log('Setting timeout for vote phase in room:', data.roomName);
+                        setTimeout(() => {
+                            handleTimeout(data.roomName);
+                            io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
+                        }, 21000);
+                    }
+
+                })().catch(err => {
+                    console.error('Error handling bot turns:', err);
                 });
             }
 
@@ -207,7 +230,7 @@ module.exports = (server) => {
                 setTimeout(() => {
                     handleTimeout(data.roomName);
                     io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
-                }, 16000);
+                }, 21000);
             }
 
 
@@ -253,7 +276,7 @@ module.exports = (server) => {
             console.log('Bot message sent to room:', roomName);
 
             await new Promise(resolve =>
-                setTimeout(resolve, Math.floor(Math.random() * 10000) + 5000)
+                setTimeout(resolve, Math.floor(Math.random() * 12000) + 8000)
             ); 
 
             io.to(roomName).emit('gameInfo', getGameInfo(roomName));

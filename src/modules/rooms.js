@@ -260,7 +260,7 @@ const handleTimeout = (roomName) => {
         }
 
         // If the phase is voting, add a pass to the votes array for everyone that didn't vote yet
-        else {
+        else if (games[index].phase === "vote") {
 
             // Add a pass to the votes array for everyone that didn't vote yet
             let players = games[index].playersGame;

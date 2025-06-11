@@ -232,11 +232,6 @@ const voteForPlayer = (roomName, vote, userName) => {
     if (index !== -1) {
         // Add the vote to the votes array
         games[index].votes.push({voter : userName, vote});
-
-        // Check if all the players have voted
-        if (games[index].votes.length === games[index].hyumansLeft) {
-            games[index].phase = "result";
-        }
     }
 }
 
@@ -248,11 +243,6 @@ const passVote = (roomName, userName) => {
 
         // Add the pass to the votes array
         games[index].votes.push({voter : userName, vote : "pass"});
-
-        // Check if all the players have voted
-        if (games[index].votes.length === games[index].humansLeft) {
-            games[index].phase = "result";
-        }
     }
 }
 
@@ -320,15 +310,14 @@ const handleVote = (roomName) => {
                         continue; // Skip if the voter is already dead
                     }
 
-                    // Remove the voter from the players
-                    let voterIndex = games[index].playersGame.findIndex(player => player.nickname === voter.nickname);
-                    games[index].playersGame.splice(voterIndex, 1);
-
                     games[index].deadPlayers.push(voter.nickname);
                     games[index].humansLeft--;
                 }
             }
         }
+
+        // Remove the dead players from the game
+        games[index].playersGame = games[index].playersGame.filter(player => !games[index].deadPlayers.includes(player.nickname));
     }
 }
 

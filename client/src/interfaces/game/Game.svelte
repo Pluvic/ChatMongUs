@@ -29,7 +29,9 @@
             countdown--;
             if (countdown == 0) {
                 clearInterval(timer);
-                handleTimeout();
+                if ($phase != "vote") {
+                    handleTimeout();
+                }
             }
         }, 1000);
     }

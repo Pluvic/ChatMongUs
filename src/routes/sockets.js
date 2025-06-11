@@ -91,6 +91,17 @@ module.exports = (server) => {
                     console.error('Error handling bot turns:', err);
                 });
             }
+
+            gameInfo = getGameInfo(data.roomName);
+
+            console.log('Game phase:', gameInfo.phase);
+            if (gameInfo.phase == "vote") {
+                console.log('Setting timeout for vote phase in room:', data.roomName);
+                setTimeout(() => {
+                    handleTimeout(data.roomName);
+                    io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
+                }, 16000);
+            }
             
         });
 
@@ -179,6 +190,27 @@ module.exports = (server) => {
 
             // Send the information to the room
             io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
+
+            gameInfo = getGameInfo(data.roomName);
+
+            if (gameInfo.isBotTurn) {
+                handleBotTurns(data.roomName).then(() => {
+                    console.log('Bot turns handled after timeout for room:', data.roomName);
+                }).catch(err => {
+                    console.error('Error handling bot turns after timeout:', err);
+                });
+            }
+
+            console.log('Game phase:', gameInfo.phase);
+            if (gameInfo.phase == "vote") {
+                console.log('Setting timeout for vote phase in room:', data.roomName);
+                setTimeout(() => {
+                    handleTimeout(data.roomName);
+                    io.to(data.roomName).emit('gameInfo', getGameInfo(data.roomName));
+                }, 16000);
+            }
+
+
         });
 
         // Socket for handling the next round
@@ -214,19 +246,21 @@ module.exports = (server) => {
     });
 
     async function handleBotTurns(roomName) {
-    let gameInfo = getGameInfo(roomName);
+        let gameInfo = getGameInfo(roomName);
 
-    while (gameInfo.isBotTurn) {
-        await botMessage(roomName);
-        console.log('Bot message sent to room:', roomName);
+        while (gameInfo.isBotTurn && gameInfo.phase == "messaging") {
+            await botMessage(roomName);
+            console.log('Bot message sent to room:', roomName);
 
-        await new Promise(resolve =>
-            setTimeout(resolve, Math.floor(Math.random() * 10000) + 5000)
-        );
+            await new Promise(resolve =>
+                setTimeout(resolve, Math.floor(Math.random() * 10000) + 5000)
+            ); 
 
-        io.to(roomName).emit('gameInfo', getGameInfo(roomName));
-        gameInfo = getGameInfo(roomName); // update for next loop check
+            io.to(roomName).emit('gameInfo', getGameInfo(roomName));
+            gameInfo = getGameInfo(roomName); // update for next loop check
+        }
+
+        return gameInfo;
     }
-}
 }
 

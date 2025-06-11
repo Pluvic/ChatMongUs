@@ -23,3 +23,6 @@ export const conversation = writable([]);
 
 // This store holds the users in the room
 export const users = writable([]);
+
+// This store holds the language preference for the room
+export const language = writable('en');

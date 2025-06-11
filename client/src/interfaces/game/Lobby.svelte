@@ -1,6 +1,6 @@
 <script>
     // Import necessary Svelte stores and components
-    import { currentRoom, numPlayers, numBots, maxPlayers, users, conversation, roomState } from "../../stores/room";
+    import { currentRoom, numPlayers, numBots, maxPlayers, users, conversation, roomState, language } from "../../stores/room";
     import { userName } from "../../stores/store";
     import { back } from "../../lib/navigation";
 
@@ -36,7 +36,7 @@
 
     // function to start the game
     function startGame() {
-        socket.emit("startGame", {roomName: $currentRoom});
+        socket.emit("startGame", {roomName: $currentRoom, language: $language});
         roomState.set("game");
     }
 
@@ -49,12 +49,23 @@
             return $userName;
         }
     }
+
+    const languages = [
+        { code: 'en', label: 'English' },
+        { code: 'fr', label: 'Français' },
+    ];
 </script>
 
 
 <main>
     <div class="room-info">
         <h1>{$currentRoom}</h1>
+
+        <select id="language-select" bind:value={$language}>
+            {#each languages as lang}
+                <option value={lang.code}>{lang.label}</option>
+            {/each}
+        </select>
 
         <h2>Number of player: {$numPlayers + $numBots} / {$maxPlayers}</h2>
         <h2>Users in the room:</h2>

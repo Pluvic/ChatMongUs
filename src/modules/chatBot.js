@@ -8,7 +8,7 @@ const { Ollama } = require('ollama');
 const ollama = new Ollama({ host :'http://ollama:11434' });
 
 // Function to generate a bot message based on the theme and conversation history
-async function generateBotMessage(theme, conversation) {
+async function generateBotMessage(theme, conversation, language = 'en') {
     // Check if the theme is empty or undefined
     if (!theme || theme.trim() === "") {
         return "Please provide a valid theme for the conversation.";
@@ -20,10 +20,18 @@ async function generateBotMessage(theme, conversation) {
         { role: "user", content : `I like to talk about ${theme}` },
         ...conversation.map(msg => ({ role: 'user', content: msg.text }))
     ];
+
+    const messagesFR = [
+        { role: "system", content: `Vous êtes un chatbot qui génère des réponses basées sur le thème : ${theme}. Restez pertinent par rapport à ce thème et essayez de ne pas dépasser 10 mots pour chaque réponse.` },
+        { role: "user", content : `J'aime parler de ${theme}` },
+        ...conversation.map(msg => ({ role: 'user', content: msg.text }))
+    ]
     
     // Generate the bot message using the Ollama API
     try {
         console.log("Generate Answer...");
+        // Choose the appropriate language for the messages
+        const messages = language === 'fr' ? messagesFR : messages;
         const response = await ollama.chat({
             model: "llama3.2",
             messages: messages,

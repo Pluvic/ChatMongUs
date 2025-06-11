@@ -147,7 +147,7 @@ module.exports = (server) => {
             console.log('Game Start in Room ' + data.roomName);
 
             // Start the game
-            let newGame = startGame(data.roomName);
+            let newGame = startGame(data.roomName, data.language);
 
             // Send the information to the room
             io.to(data.roomName).emit('gameInfo', newGame);

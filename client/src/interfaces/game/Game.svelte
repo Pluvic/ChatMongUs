@@ -1,6 +1,6 @@
 <script>
     // Import necessary stores and assets
-    import { currentRoom } from "../../stores/room";
+    import { currentRoom, language } from "../../stores/room";
     import robot1 from "../../assets/robot1.png";
     import robot2 from "../../assets/robot2.png";
     import robot3 from "../../assets/robot3.png";
@@ -8,6 +8,7 @@
     import robot5 from "../../assets/robot5.png";
     import robot6 from "../../assets/robot6.png";
     import { nickname, currentTheme, players, turn, phase, messages, isBotTurn, hasAlreadyVoted, deadPlayers, winner } from "../../stores/game";
+    import { translations } from "../../lib/translation";
 
     // Take the socket variable from the parent component
     export let socket;
@@ -18,6 +19,7 @@
     let countdown;
     let timer;
     let robotsImage = [robot1, robot2, robot3, robot4, robot5, robot6];
+    $: t = translations[$language];
 
     // Function to start a timer given a time in seconds
     /**
@@ -104,29 +106,31 @@
 
 <main>
     <h1>{$currentRoom}</h1>
-    {#if $phase == "messaging"}
-        <p>Current theme is : {$currentTheme}</p>
-        <p>Its {$turn}'s turn ! <span>( {countdown}s left)</span></p>
-    {:else if $phase == "vote"}
-        <h2>Time to vote ! <span>( {countdown}s left)</span></h2>
-    {:else if $phase == "results"}
-        <h2>Results</h2>
+    {#if $phase === "messaging"}
+        <p>{t.currentTheme} : {$currentTheme}</p>
+        <p>{t.turn($turn)} <span>{t.secondsLeft(countdown)}</span></p>
 
-    {:else if $phase == "end"}
-        <h2>Game Over</h2>
-        <h3>The winner is: {$winner}</h3>
+    {:else if $phase === "vote"}
+        <h2>{t.vote} <span>{t.secondsLeft(countdown)}</span></h2>
+
+    {:else if $phase === "results"}
+        <h2>{t.results}</h2>
+
+    {:else if $phase === "end"}
+        <h2>{t.end}</h2>
+        <h3>{t.winner($winner)}</h3>
     {/if}
 
     {#if $phase == "results"}
         {#if $deadPlayers.length > 0}
-            <h2>Dead players:</h2>
+            <h2>{t.deadPlayers}</h2>
             <ul>
                 {#each $deadPlayers as deadPlayer}
                     <li>{deadPlayer}</li>
                 {/each}
             </ul>
         {:else}
-            <h2>No one died</h2>
+            <h2>{t.noDeadPlayers}</h2>
         {/if}
     {:else if $phase == "end"}
         <button on:click = {() => window.location.href = "/"}>Back to lobby</button>

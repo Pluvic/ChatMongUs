@@ -39,17 +39,20 @@
         <h1 id="title">Create a Game</h1>
     </div>
     <form on:submit|preventDefault={createGame}>
-        <h2>Name</h2>
-        <input type="text" bind:value={roomName} id="name" required>
+        <div class="form-container">
+            <h2>Name</h2>
+            <input type="text" bind:value={roomName} id="name" required>
 
-        <h2>Number of Players</h2>
-        <input type="number" bind:value={maxPlayers} id="players" required>
+            <h2>Number of Players</h2>
+            <input type="number" bind:value={maxPlayers} id="players" required>
 
-        <h2>Number of Bots</h2>
-        <input type="number" bind:value={numBots} id="bots" required>
+            <h2>Number of Bots</h2>
+            <input type="number" bind:value={numBots} id="bots" required>
 
-        <button type="submit">Create</button>
+            <button type="submit">Create</button>
+        </div>
     </form>
+
 
     <footer>
         <Profile />
@@ -75,8 +78,31 @@
         color: white;
     }
     form {
-        margin-left: 4em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
     }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 300px;
+    }
+
+    .form-container h2 {
+        margin-bottom: 0.3em;
+    }
+
+    .form-container input {
+        width: 100%;
+        margin-bottom: 1em;
+        padding: 0.5em;
+        box-sizing: border-box;
+        border-radius: 10px;
+    }
+
 
     #backButton {
         margin: 1em;

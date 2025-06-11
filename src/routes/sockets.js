@@ -280,7 +280,7 @@ module.exports = (server) => {
             ); 
 
             io.to(roomName).emit('gameInfo', getGameInfo(roomName));
-            gameInfo = getGameInfo(roomName); // update for next loop check
+            gameInfo = getGameInfo(roomName);
         }
 
         return gameInfo;

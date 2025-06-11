@@ -30,20 +30,21 @@
 
 <main>
     <button on:click = {back}>Back</button>
-
     <div class="history">
         <h1>History</h1>
         {#if seeGames}
             <p>Here you can see the history of your games</p>
-            <div class = "games">
-                {#each history as game}
-                    <div class="game">
-                        <p>Room Name: {game.roomName}</p>
-                        <p>Number of Messages: {game.conversation.length}</p>
-                        <button on:click={() => seeMessages(game.roomName)}>See</button>
-                    </div>
-                
-                {/each}
+            <div>
+                <div class = "games">
+                    {#each history as game}
+                        <div class="game">
+                            <p>Room Name: {game.roomName}</p>
+                            <p>Number of Messages: {game.conversation.length}</p>
+                            <button on:click={() => seeMessages(game.roomName)}>See</button>
+                        </div>
+                    
+                    {/each}
+                </div>
             </div>
         {:else}
             <h2>Here you can see the messages of the game {oldRoomName}</h2>
@@ -68,6 +69,7 @@
         flex-direction: column;
         align-items: center;
         color: white;
+        justify-content: center;
     }
 
     .game {
@@ -78,7 +80,9 @@
     }
 
     .games {
-        overflow-y: auto;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
     .messages {

@@ -15,7 +15,7 @@ let games = [];
 
 // List of all the different subjects
 let subject = ["BoardGames", "VideoGames", "CardGames", "Sports", "Movies", "Music", "Books", "TVShows", "Food", "Travel", "Animals", "History", "Science", "Art", "Geography", "Math", "Literature", "Politics", "Fashion", "Technology", "Cars", "Plants", "Space", "Mythology", "Religion", "Language", "Culture", "Health", "Fitness", "MentalHealth", "Relationships", "Education", "Work", "Money", "Hobbies", "SocialMedia", "News", "Weather", "ClimateChange", "Sustainability", "HumanRights", "Equality", "Justice", "Peace", "War", "Violence", "Crime", "Corruption"];
-let subjectFR = ["JeuxDeSociété", "JeuxVidéo", "JeuxDeCartes", "Sports", "Films", "Musique", "Livres", "SériesTV", "Nourriture", "Voyages", "Animaux", "Histoire", "Science", "Art", "Géographie", "Mathématiques", "Littérature", "Politique", "Mode", "Technologie", "Voitures", "Plantes", "Espace", "Mythologie", "Religion", "Langue", "Culture", "Santé", "Fitness", "SantéMentale", "Relations", "Éducation", "Travail", "Argent", "Loisirs", "RéseauxSociaux", "Actualités", "Météo", "ChangementClimatique", "Durabilité", "DroitsHumains", "Égalité", "Justice", "Paix", "Guerre"];
+let subjectFR = ["Informatique", "Université", "Chansons", "Films", "Livres", "Jeu de société", "Géographie", "Jeux vidéo", "Sports", "Sciences", "Mathématiques"];
 // List of all the different nicknames
 let nickNames = ["Victor", "Ugho", "Louca", "Antoine", "Noah", "Thomas", "Mathieu", "Mathis", "Célestin"];
 // List of random messages use when a timeout occurs for a player
@@ -217,8 +217,10 @@ const botMessage = (roomName) => {
     // Find the game where the bot is
     const index = games.findIndex(game => game.roomName === roomName);
     if (index !== -1) {
+
+        let messagesToSend = games[index].playersGame.length - games[index].messagesLeft;
         // Generate a message for the bot and return the Promise
-        return generateBotMessage(games[index].currentTheme, games[index].messages, games[index].language)
+        return generateBotMessage(games[index].currentTheme, games[index].messages.slice(-messagesToSend), games[index].language)
             .then(response => {
                 games[index].messages.push({ text: response, sender: games[index].turn, isBot: true });
                 updateGame(roomName);

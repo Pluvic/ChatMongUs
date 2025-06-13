@@ -248,12 +248,14 @@ module.exports = (server) => {
             gameInfo = getGameInfo(data.roomName);
 
             // Handle bot turns if there are bots in the game
-            if (gameInfo.isBotTurn) {
-                handleBotTurns(data.roomName).then(() => {
-                    console.log('Bot turns handled for room:', data.roomName);
-                }).catch(err => {
-                    console.error('Error handling bot turns:', err);
-                });
+            if (gameInfo != null) {
+                if (gameInfo.isBotTurn) {
+                    handleBotTurns(data.roomName).then(() => {
+                        console.log('Bot turns handled for room:', data.roomName);
+                    }).catch(err => {
+                        console.error('Error handling bot turns:', err);
+                    });
+                }
             }
         });
 

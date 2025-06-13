@@ -9,19 +9,19 @@
      */
     function seeMessages(id) {
         seeGames = false;
-        messages = history.find(game => game.id == id).conversation;
+        messages = historyMessage.find(game => game.id == id).conversation;
         oldRoomName = id;
     }
 
     // Define the local variables
     let seeGames = true;
     let oldRoomName = "";
-    let history = [];
+    let historyMessage = [];
     let messages = [];
 
     // Function to get the history of games
     getHistory().then(data => {
-        history = data;
+        historyMessage = data;
         console.log(data)
     });
 
@@ -29,14 +29,18 @@
 </script>
 
 <main>
-    <button on:click = {back}>Back</button>
+    {#if seeGames}
+        <button on:click={back}>Back</button>
+    {:else}
+        <button on:click={() => {seeGames = true;}}>Back to Games</button>
+    {/if}
     <div class="history">
         <h1>History</h1>
         {#if seeGames}
             <p>Here you can see the history of your games</p>
             <div>
                 <div class = "games">
-                    {#each history as game}
+                    {#each historyMessage as game}
                         <div class="game">
                             <p>Room Name: {game.roomName}</p>
                             <p>Number of Messages: {game.conversation.length}</p>
@@ -73,7 +77,7 @@
     }
 
     .game {
-        border : 1px solid white;
+        background-color: white;
         border-radius: 10%;
         padding : 1em;
         margin: 1em;

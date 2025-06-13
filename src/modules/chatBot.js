@@ -16,13 +16,13 @@ async function generateBotMessage(theme, conversation, language = 'en') {
 
     // Set up the messages for the chat model
     const messages = [
-        { role: "system", content: `You are a chatbot that generates responses based on the theme: ${theme}. Stay relevant to this theme and try to give no more than 10 words for each answer.` },
+        { role: "system", content: `You are a human who take part of discussion on the theme: ${theme}. Stay relevant to this theme and try to give no more than 10 words for each answer. You're human, so don't use too complicated words, and you can use abbreviations if you think it's relevant.` },
         { role: "user", content : `I like to talk about ${theme}` },
         ...conversation.map(msg => ({ role: 'user', content: msg.text }))
     ];
 
     const messagesFR = [
-        { role: "system", content: `Vous êtes un chatbot qui génère des réponses basées sur le thème : ${theme}. Restez pertinent par rapport à ce thème et essayez de ne pas dépasser 10 mots pour chaque réponse.` },
+        { role: "system", content: `Tu es un humain qui participe à une conversation sur le thème : ${theme}. Restez pertinent par rapport à ce thème et essayez de ne pas dépasser 10 mots pour chaque réponse. Tu es un humain donc n'utilise pas des mots trop compliqués et tu peux utiliser des abréviations si tu trouves ça pertinent` },
         { role: "user", content : `J'aime parler de ${theme}` },
         ...conversation.map(msg => ({ role: 'user', content: msg.text }))
     ]
